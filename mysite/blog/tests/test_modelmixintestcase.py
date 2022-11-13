@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from blog.models import Post
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class ModelMixinTestCase(TestCase):
@@ -15,10 +16,12 @@ class ModelMixinTestCase(TestCase):
             author=self.user,
             body="hi Welcome to my page",
             status="draft",
+            slug="welcome",
         )
         self.published_post = Post.objects.create(
             title="Welcome back",
             author=self.user,
             body="hi whats up",
             status="published",
+            slug="welcome-back",
         )
