@@ -22,9 +22,3 @@ class ModelMixinTestCase(TestCase):
             body="hi whats up",
             status="published",
         )
-        self.published_post= Post.objects.create(
-            title="Welcome back again",
-            author=self.user,
-            body="hi whats up now",
-            status="published",
-        )
