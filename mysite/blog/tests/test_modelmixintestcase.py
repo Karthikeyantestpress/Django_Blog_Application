@@ -25,3 +25,4 @@ class ModelMixinTestCase(TestCase):
             status="published",
             slug="welcome-back",
         )
+        self.client = Client()
