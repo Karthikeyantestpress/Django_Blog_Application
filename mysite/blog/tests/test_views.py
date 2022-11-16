@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from blog.models import Post
-from blog.tests.test_modelmixintestcase import ModelMixinTestCase
+from blog.tests.test_model_mixin_testcases import ModelMixinTestCase
 
 
 class TestViews(ModelMixinTestCase, TestCase):
@@ -25,3 +24,6 @@ class TestViews(ModelMixinTestCase, TestCase):
         response = self.client.get(self.post_detail_url)
 
         self.assertTemplateUsed(response, "blog/post/detail.html")
+
+
+

@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from blog.models import Post
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -25,4 +25,4 @@ class ModelMixinTestCase(TestCase):
             status="published",
             slug="welcome-back",
         )
-        self.client = Client()
+        

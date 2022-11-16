@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from blog.views import post_list, post_detail
-from blog.tests.test_modelmixintestcase import ModelMixinTestCase
+from blog.tests.test_model_mixin_testcases import ModelMixinTestCase
 
 
 class Testurls(ModelMixinTestCase, SimpleTestCase):
