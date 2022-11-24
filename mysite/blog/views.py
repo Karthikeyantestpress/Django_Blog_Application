@@ -1,10 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.views.generic import ListView, FormView
-from .forms import EmailPostForm
+from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 
 
 class PostListView(ListView):
@@ -14,21 +16,31 @@ class PostListView(ListView):
     template_name = "blog/post/list.html"
 
 
-def getCommentsoFPost(post):
-    return post.comments.filter(active=True)
+@require_http_methods(["POST"])
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status="published")
 
-
-def check_valid_comment_to_save(comment_form, post):
-    new_comment = comment_form.save(commit=False)
-    new_comment.post = post
-    new_comment.save()
-    return new_comment
-
-
-def check_comment_form_validity_and_save_comment(comment_form, post):
+    comment_form = CommentForm(data=request.POST or None)
     if comment_form.is_valid():
-        new_comment = check_valid_comment_to_save(comment_form, post)
-        return new_comment
+        comment = comment_form.save(commit=False)
+        comment.post = post
+        comment.save()
+        messages.success(request, message="Comment added successfully")
+        return redirect(
+            "blog:post_detail",
+            post.publish.year,
+            post.publish.month,
+            post.publish.day,
+            post.slug,
+        )
+
+    return render(
+        request,
+        "blog/post/detail.html",
+        {
+            "comment_form": comment_form,
+        },
+    )
 
 
 def post_detail(request, year, month, day, post):
@@ -40,26 +52,13 @@ def post_detail(request, year, month, day, post):
         publish__month=month,
         publish__day=day,
     )
-    comments = getCommentsoFPost(post)
-    new_comment = None
-
-    if request.method == "POST":
-        comment_form = CommentForm(data=request.POST)
-        new_comment = check_comment_form_validity_and_save_comment(
-            comment_form, post
-        )
-
-    else:
-        comment_form = CommentForm()
 
     return render(
         request,
         "blog/post/detail.html",
         {
             "post": post,
-            "comments": comments,
-            "new_comment": new_comment,
-            "comment_form": comment_form,
+            "comment_form": CommentForm,
         },
     )
 

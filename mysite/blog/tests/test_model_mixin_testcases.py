@@ -24,8 +24,7 @@ class ModelMixinTestCase(TestCase):
             status="published",
             slug="welcome-back",
         )
-        
-        
+
     def create_published_posts(self, count):
         posts = []
         for _ in range(count):
