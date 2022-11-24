@@ -6,11 +6,11 @@ from blog.tests.test_model_mixin_testcases import ModelMixinTestCase
 
 class Testurls(ModelMixinTestCase, SimpleTestCase):
     def test_list(self):
-        self.post_list_url = reverse("blog:post_list")
-        self.assertEqual((resolve(self.post_list_url).func), post_list)
+        post_list_url = reverse("blog:post_list")
+        self.assertEqual((resolve(post_list_url).func), post_list)
 
     def test_detail(self):
-        self.post_detail_url = reverse(
+        post_detail_url = reverse(
             "blog:post_detail",
             args=[
                 self.published_post.publish.year,
@@ -19,4 +19,4 @@ class Testurls(ModelMixinTestCase, SimpleTestCase):
                 self.published_post.slug,
             ],
         )
-        self.assertEqual((resolve(self.post_detail_url).func), post_detail)
+        self.assertEqual((resolve(post_detail_url).func), post_detail)

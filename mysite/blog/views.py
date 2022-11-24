@@ -3,19 +3,22 @@ from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-def post_list(request):
-    Published_posts = Post.published.all()
-    Total_posts_per_page = 3
-    paginator = Paginator(Published_posts, Total_posts_per_page)
-    page = request.GET.get("page")
+def paginate(published_posts, page, total_posts_per_page):
+    paginator = Paginator(published_posts, total_posts_per_page)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(
-        request, "blog/post/list.html", {"page": page, "posts": posts}
+    return posts
+
+
+def post_list(request):
+
+   posts=paginate(Post.published.all(),request.GET.get("page"),3)
+   return render(
+        request, "blog/post/list.html", {"page": request.GET.get("page"), "posts": posts}
     )
 
 
