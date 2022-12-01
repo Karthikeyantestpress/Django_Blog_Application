@@ -10,7 +10,6 @@ from django.views.decorators.http import require_http_methods
 from taggit.models import Tag
 
 
-
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = "posts"
@@ -61,8 +60,10 @@ def post_detail(request, year, month, day, post):
         {
             "post": post,
             "comment_form": CommentForm,
+            "similar_posts": post.get_top_four_similar_posts(),
         },
     )
+
 
 class PostListByTagview(ListView):
     context_object_name = "posts"
@@ -80,6 +81,7 @@ class PostListByTagview(ListView):
         data = super().get_context_data(**kwargs)
         data["tag"] = self.tag
         return data
+
 
 class PostShareView(SuccessMessageMixin, FormView):
     form_class = EmailPostForm
