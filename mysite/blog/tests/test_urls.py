@@ -1,13 +1,16 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from blog.views import post_list, post_detail
+from blog.views import PostListView, post_detail
 from blog.tests.test_model_mixin_testcases import ModelMixinTestCase
 
 
 class Testurls(ModelMixinTestCase, SimpleTestCase):
     def test_list(self):
+
         post_list_url = reverse("blog:post_list")
-        self.assertEqual((resolve(post_list_url).func), post_list)
+        self.assertEqual(
+            (resolve(post_list_url).func.view_class), PostListView
+        )
 
     def test_detail(self):
         post_detail_url = reverse(
