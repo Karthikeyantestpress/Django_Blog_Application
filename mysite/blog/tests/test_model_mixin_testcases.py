@@ -1,7 +1,6 @@
 from django.test import TestCase
 from blog.models import Post
 from django.contrib.auth.models import User
-from django.urls import reverse
 
 
 class ModelMixinTestCase(TestCase):
@@ -26,3 +25,16 @@ class ModelMixinTestCase(TestCase):
             slug="welcome-back",
         )
         
+        
+    def create_published_posts(self, count):
+        posts = []
+        for _ in range(count):
+            post = Post.objects.create(
+                title="Published2",
+                author=self.user,
+                body="Testing Published2",
+                status="published",
+                slug="published2",
+            )
+            posts.append(post)
+        return posts
