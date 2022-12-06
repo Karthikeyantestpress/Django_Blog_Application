@@ -5,6 +5,7 @@ from blog.views import (
     post_detail,
     PostShareView,
     PostListByTagview,
+    post_search,
 )
 from blog.tests.test_model_mixin_testcases import ModelMixinTestCase
 
@@ -46,3 +47,6 @@ class Testurls(ModelMixinTestCase, SimpleTestCase):
             ).func.view_class,
             PostListByTagview,
         )
+
+    def test_post_search_url_is_resolved(self):
+        self.assertEquals(resolve(self.search_url).func, post_search)

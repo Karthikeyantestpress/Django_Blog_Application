@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "taggit",
     "django.contrib.sites",
     "django.contrib.sitemaps",
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
@@ -76,14 +77,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mysite.wsgi.application"
 
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": env("ENGINE"),
+        "NAME": env("NAME"),
+        "USER": env("USER"),
+        "PASSWORD": env("PASSWORD"),
     }
 }
 
@@ -128,9 +134,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-env = environ.Env()
-environ.Env.read_env()
 
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
